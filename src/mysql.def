@@ -1,2 +1,2 @@
 EXPORTS
-	luaopen_luasql_mysql
+	luaopen_luasqlmysql

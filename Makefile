@@ -12,6 +12,7 @@ SRCS= src/luasql.h src/luasql.c \
 	src/ls_odbc.c \
 	src/ls_oci8.c \
 	src/ls_mysql.c \
+	src/ls_mssql.c \
 	src/ls_sqlite.c \
 	src/ls_sqlite3.c
 
@@ -23,6 +24,7 @@ lib: src/$(LIBNAME)
 
 src/$(LIBNAME): $(OBJS)
 	export MACOSX_DEPLOYMENT_TARGET="10.3"; $(CC) $(CFLAGS) -o $@ $(LIB_OPTION) $(OBJS) $(DRIVER_LIBS)
+	cp src/$T.so src/luasql$T.so
 
 install:
 	mkdir -p $(LUA_LIBDIR)/luasql
@@ -32,6 +34,6 @@ jdbc_driver:
 	cd src/jdbc; make $@
 
 clean:
-	rm -f src/$(LIBNAME) src/*.o
+	rm -f src/$(LIBNAME) src/*.o src/luasqlmysql.so
 
 # $Id: Makefile,v 1.56 2008/05/30 17:21:18 tomas Exp $

@@ -1,13 +1,15 @@
 # $Id: config,v 1.10 2008/05/30 17:21:18 tomas Exp $
 
 # Driver (leave uncommented ONLY the line with the name of the driver)
-T= mysql
+#T= mysql
+T= mssql
 #T= oci8
 #T= odbc
 #T= postgres
 #T= sqlite
 #T=sqlite3
 #T=firebird
+#T=sqlserver
 
 # Installation directories
 
@@ -27,18 +29,18 @@ LUA_INC= $(PREFIX)/include
 LUA_VERSION_NUM= 501
 
 # OS dependent
-LIB_OPTION= -shared #for Linux
-#LIB_OPTION= -bundle -undefined dynamic_lookup #for MacOS X
+#LIB_OPTION= -shared #for Linux
+LIB_OPTION= -bundle -undefined dynamic_lookup #for MacOS X
 
 LIBNAME= $T.so
 
 # Compilation parameters
 # Driver specific
 ######## MySQL
-#DRIVER_LIBS= -L/usr/local/mysql/lib -lmysqlclient -lz
-#DRIVER_INCS= -I/usr/local/mysql/include
-DRIVER_LIBS= -L/usr/lib -lmysqlclient -lz
-DRIVER_INCS= -I/usr/include/mysql
+####DRIVER_LIBS= -L/usr/local/mysql/lib -lmysqlclient -lz
+####DRIVER_INCS= -I/usr/local/mysql/include
+#DRIVER_LIBS= -L/usr/lib -L/usr/local/mysql-5.7.18-macos10.12-x86_64/lib/  -lmysqlclient -lz
+#DRIVER_INCS= -I/usr/include/mysql -I/usr/local/mysql-5.7.18-macos10.12-x86_64/include/
 ######## Oracle OCI8
 #DRIVER_LIBS= -L/home/oracle/OraHome1/lib -lz -lclntsh
 #DRIVER_INCS= -I/home/oracle/OraHome1/rdbms/demo -I/home/oracle/OraHome1/rdbms/public
@@ -59,8 +61,12 @@ DRIVER_INCS= -I/usr/include/mysql
 ######## Firebird
 #DRIVER_LIBS= -L/usr/local/firebird -lfbclient
 #DRIVER_INCS=
+######## mssql
+DRIVER_LIBS= -L/usr/lib -L/usr/local/Cellar/freetds/1.00.26/lib/ -lsybdb -lct -lz
+DRIVER_INCS= -I/usr/local/Cellar/freetds/1.00.26/include/
 
-WARN= -Wall -Wmissing-prototypes -Wmissing-declarations -ansi -pedantic
+#WARN= -Wall -Wmissing-prototypes -Wmissing-declarations -ansi -pedantic
+WARN= -Wall -Wmissing-prototypes -Wmissing-declarations -pedantic
 INCS= -I$(LUA_INC)
 CFLAGS= -O2 $(WARN) -fPIC $(DRIVER_INCS) $(INCS) -DLUASQL_VERSION_NUMBER='"$V"' $(DEFS)
 CC= gcc

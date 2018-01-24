@@ -77,7 +77,7 @@ typedef struct {
 	MYSQL_RES *my_res;
 } cur_data;
 
-LUASQL_API int luaopen_luasql_mysql (lua_State *L);
+LUASQL_API int luaopen_luasqlmysql (lua_State *L);
 
 
 /*
@@ -190,6 +190,7 @@ static int cur_nullify (lua_State *L, cur_data *cur) {
 	luaL_unref (L, LUA_REGISTRYINDEX, cur->conn);
 	luaL_unref (L, LUA_REGISTRYINDEX, cur->colnames);
 	luaL_unref (L, LUA_REGISTRYINDEX, cur->coltypes);
+	return 1;
 }
 
 	
@@ -491,7 +492,9 @@ static int env_connect (lua_State *L) {
 	const char *username = luaL_optstring(L, 3, NULL);
 	const char *password = luaL_optstring(L, 4, NULL);
 	const char *host = luaL_optstring(L, 5, NULL);
-	const int port = luaL_optint(L, 6, 0);
+	//const int port = luaL_optint(L, 6, 0);  // for lua 5.1
+	const int port = luaL_optinteger(L, 6, 0);  // for lua 5.3
+
 	MYSQL *conn;
 	getenvironment(L); /* validade environment */
 
@@ -592,7 +595,7 @@ static int create_environment (lua_State *L) {
 ** Creates the metatables for the objects and registers the
 ** driver open method.
 */
-LUASQL_API int luaopen_luasql_mysql (lua_State *L) { 
+LUASQL_API int luaopen_luasqlmysql (lua_State *L) {
 	struct luaL_Reg driver[] = {
 		{"mysql", create_environment},
 		{NULL, NULL},
